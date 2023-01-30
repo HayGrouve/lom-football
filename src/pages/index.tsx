@@ -115,15 +115,15 @@ const Home: NextPage = () => {
                     <td className="px-6 py-4">
                       {item.name}
                       {isAdmin && (
-                        <span
+                        <button
                           onClick={() => void removePlayer(item.id)}
                           className={
-                            "cursor-pointer text-red-500 hover:text-red-400"
+                            "ml-3 cursor-pointer text-red-500 hover:text-red-400"
                           }
                         >
                           {" "}
                           X
-                        </span>
+                        </button>
                       )}
                     </td>
                   </tr>
