@@ -45,6 +45,18 @@ const Home: NextPage = () => {
     else setPlayers(name);
   };
 
+  const deleteAllPlayers = () => {
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    localPlayers.forEach(async (player) => {
+      const { error } = await supabase
+        .from("players")
+        .delete()
+        .eq("id", player.id);
+      if (error) console.log("error", error);
+      setIsRefresh(!isRefresh);
+    });
+  };
+
   useEffect(() => {
     void getPlayers();
   }, [isRefresh]);
@@ -91,6 +103,16 @@ const Home: NextPage = () => {
             >
               Ok
             </button>
+            {isAdmin && (
+              <button
+                onClick={() => void deleteAllPlayers()}
+                type="submit"
+                className="cursor-pointer rounded bg-red-700
+            px-5 py-2.5 text-sm font-medium uppercase text-white transition duration-150 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+              >
+                X
+              </button>
+            )}
           </div>
 
           <div className="relative overflow-x-auto">
