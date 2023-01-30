@@ -18,6 +18,10 @@ const Home: NextPage = () => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   const addPlayer = async () => {
+    if (playerName.trim().length === 0) {
+      setPlayerName("");
+      return;
+    }
     const { error } = await supabase
       .from("players")
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
