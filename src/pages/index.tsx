@@ -134,7 +134,7 @@ const Home: NextPage = () => {
             ч.
           </h2>
           {isAdmin && (
-            <div className="flex gap-2 text-white">
+            <div className="flex flex-col gap-2 text-white sm:flex-row">
               <input
                 onKeyUp={(e) => {
                   if (e.key === "Enter") {
@@ -191,6 +191,15 @@ const Home: NextPage = () => {
             width="100%"
             loading="lazy"
           ></iframe>
+          <p className="text-xs text-white">
+            Администратор{" "}
+            <a
+              href="https://www.facebook.com/dobrevv"
+              className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+            >
+              Дани
+            </a>
+          </p>
           <div className={styles.container}>
             <label htmlFor="player">Zapishi se:</label>
             <input
@@ -217,6 +226,7 @@ const Home: NextPage = () => {
             >
               Ok
             </button>
+
             {isAdmin && (
               <button
                 onClick={() => void deleteAllPlayers()}
