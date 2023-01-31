@@ -201,7 +201,7 @@ const Home: NextPage = () => {
             </a>
           </p>
           <div className={styles.container}>
-            <label htmlFor="player">Zapishi se:</label>
+            <label htmlFor="player">Запиши се:</label>
             <input
               onKeyUp={(e) => {
                 if (e.key === "Enter") {
@@ -215,7 +215,7 @@ const Home: NextPage = () => {
               className={
                 "rounded border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
               }
-              placeholder="Patriciq"
+              placeholder="Позови се"
               required
             />
             <button
@@ -246,7 +246,7 @@ const Home: NextPage = () => {
                     #
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    Name
+                    Името ти
                   </th>
                 </tr>
               </thead>
