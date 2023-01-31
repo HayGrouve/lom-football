@@ -276,7 +276,7 @@ const Home: NextPage = () => {
               </tbody>
             </table>
           </div>
-          <hr className="my-8 h-px w-4/5 border-0 bg-gray-200 dark:bg-gray-700" />
+          <hr className="my-8 h-px w-4/5 border-0 bg-gray-200 dark:bg-gray-400" />
           <div className="flex flex-col gap-7">
             <h2 className="text-center text-3xl font-bold text-white">
               Кинти на човек:{" "}
