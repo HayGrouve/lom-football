@@ -21,6 +21,10 @@ const Home: NextPage = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [teamA, setTeamA] = useState<dbPlayers[]>([]);
   const [teamB, setTeamB] = useState<dbPlayers[]>([]);
+  const [dateTime, setDateTime] = useState({});
+  const [day, setDay] = useState("");
+  const [startTime, setStartTime] = useState(0);
+  const [endTime, setEndTime] = useState(0);
 
   const getRandomTeams = () => {
     const playersToSort = localPlayers.map((item) => item);
@@ -61,12 +65,15 @@ const Home: NextPage = () => {
   };
 
   const getPlayers = async () => {
-    const { data: name, error } = await supabase
+    const { data: names, error } = await supabase
       .from("players")
       .select("*")
       .order("id");
     if (error) console.log("error", error);
-    else setPlayers(name);
+    else setPlayers(names);
+    const { data: dateTimeItem } = await supabase.from("datetime").select("*");
+    // eslint-disable-next-line
+    setDateTime(dateTimeItem[dateTimeItem?.length - 1]);
   };
 
   const deleteAllPlayers = () => {
@@ -79,6 +86,19 @@ const Home: NextPage = () => {
       if (error) console.log("error", error);
       setIsRefresh(!isRefresh);
     });
+  };
+
+  const changeDateTime = async () => {
+    const { error } = await supabase
+      .from("datetime")
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+      .insert({ id: uuidv4(), day: day, start: startTime, end: endTime });
+    if (error) console.log("error", error);
+    toast.success(`Дата и час са променени!`);
+    setDay("");
+    setStartTime(NaN);
+    setEndTime(NaN);
+    setIsRefresh(!isRefresh);
   };
 
   useEffect(() => {
@@ -103,8 +123,61 @@ const Home: NextPage = () => {
             <span className={"text-green-600"}>FOOTBALL</span>
           </h1>
           <h2 className="text-center text-3xl tracking-tight text-white">
-            Неделя от 20:00ч.
+            {dateTime.day} от {dateTime.start}:
+            {dateTime.end === 0 ? `${dateTime.end}0` : dateTime.end}ч.
           </h2>
+          {isAdmin && (
+            <div className="flex gap-2 text-white">
+              <input
+                onKeyUp={(e) => {
+                  if (e.key === "Enter") {
+                    void addPlayer();
+                  }
+                }}
+                onChange={(e) => void setDay(e.target.value)}
+                value={day}
+                type="text"
+                id="first_name"
+                className={
+                  "rounded border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                }
+                placeholder="Ден"
+                required
+              />
+              <input
+                onChange={(e) => setStartTime(parseInt(e.target.value))}
+                value={startTime}
+                type="number"
+                id="first_name"
+                max={24}
+                className={
+                  "rounded border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                }
+                placeholder="Час"
+                required
+              />
+              <input
+                onChange={(e) => setEndTime(parseInt(e.target.value))}
+                value={endTime}
+                type="number"
+                max={24}
+                id="first_name"
+                className={
+                  "rounded border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                }
+                placeholder="Минути"
+                required
+              />
+              <button
+                onClick={() => void changeDateTime()}
+                type="submit"
+                className="cursor-pointer rounded bg-green-800
+      px-5 py-2.5 text-sm font-medium uppercase text-white transition duration-150 hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 dark:bg-green-700 dark:hover:bg-green-600 dark:focus:ring-green-800"
+              >
+                Ok
+              </button>
+            </div>
+          )}
           <iframe
             className={styles.map}
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1467.2546323433069!2d23.353366104190346!3d42.65056237050475!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xa975548429c8bc0f!2s%22Bonsist%22%20Sports%20Complex!5e0!3m2!1sen!2sbg!4v1675163061462!5m2!1sen!2sbg"
