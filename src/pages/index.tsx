@@ -21,7 +21,11 @@ const Home: NextPage = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [teamA, setTeamA] = useState<dbPlayers[]>([]);
   const [teamB, setTeamB] = useState<dbPlayers[]>([]);
-  const [dateTime, setDateTime] = useState({});
+  const [dateTime, setDateTime] = useState<{
+    day: string;
+    start: number;
+    end: number;
+  }>();
   const [day, setDay] = useState("");
   const [startTime, setStartTime] = useState(0);
   const [endTime, setEndTime] = useState(0);
@@ -73,7 +77,7 @@ const Home: NextPage = () => {
     else setPlayers(names);
     const { data: dateTimeItem } = await supabase.from("datetime").select("*");
     // eslint-disable-next-line
-    setDateTime(dateTimeItem[dateTimeItem?.length - 1]);
+    if (dateTimeItem) setDateTime(dateTimeItem[dateTimeItem?.length - 1]);
   };
 
   const deleteAllPlayers = () => {
@@ -123,8 +127,11 @@ const Home: NextPage = () => {
             <span className={"text-green-600"}>FOOTBALL</span>
           </h1>
           <h2 className="text-center text-3xl tracking-tight text-white">
-            {dateTime.day} от {dateTime.start}:
-            {dateTime.end === 0 ? `${dateTime.end}0` : dateTime.end}ч.
+            {dateTime && dateTime.day} от {dateTime && dateTime.start}:
+            {dateTime && dateTime.end === 0
+              ? `${dateTime.end}0`
+              : dateTime && dateTime.end}
+            ч.
           </h2>
           {isAdmin && (
             <div className="flex gap-2 text-white">
