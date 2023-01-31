@@ -3,6 +3,9 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import { v4 as uuidv4 } from "uuid";
+import React from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import styles from "../styles/index.module.css";
 
 interface dbPlayers {
@@ -16,9 +19,25 @@ const Home: NextPage = () => {
   const [playerName, setPlayerName] = useState("");
   const [isRefresh, setIsRefresh] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [teamA, setTeamA] = useState<dbPlayers[]>([]);
+  const [teamB, setTeamB] = useState<dbPlayers[]>([]);
+
+  const getRandomTeams = () => {
+    const playersToSort = localPlayers.map((item) => item);
+    const players = playersToSort.sort((a, b) => 0.5 - Math.random());
+    const indexToSplit = players.length / 2;
+    setTeamA(players.slice(0, indexToSplit));
+    setTeamB(players.slice(indexToSplit));
+  };
 
   const addPlayer = async () => {
     if (playerName.trim().length === 0) {
+      toast.error("Невалидно име!");
+      setPlayerName("");
+      return;
+    }
+    if (localPlayers.length === 14) {
+      toast.error("Много ора сме уе!");
       setPlayerName("");
       return;
     }
@@ -27,6 +46,7 @@ const Home: NextPage = () => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
       .insert({ id: uuidv4(), name: playerName });
     if (error) console.log("error", error);
+    toast.success(`${playerName} е регистриран!`);
     setPlayerName("");
     setIsRefresh(!isRefresh);
   };
@@ -75,12 +95,22 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#000000] to-[#555555]">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
+          <ToastContainer />;
           <h1 className="text-center text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
             <span onClick={() => setIsAdmin(!isAdmin)}>L</span>omski{" "}
             <span className={"text-green-600"}>FOOTBALL</span>
           </h1>
+          <h2 className="text-center text-3xl tracking-tight text-white">
+            Неделя от 20:00ч.
+          </h2>
+          <iframe
+            className={styles.map}
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1467.2546323433069!2d23.353366104190346!3d42.65056237050475!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xa975548429c8bc0f!2s%22Bonsist%22%20Sports%20Complex!5e0!3m2!1sen!2sbg!4v1675163061462!5m2!1sen!2sbg"
+            width="100%"
+            loading="lazy"
+          ></iframe>
           <div className={styles.container}>
             <label htmlFor="player">Zapishi se:</label>
             <input
@@ -102,8 +132,8 @@ const Home: NextPage = () => {
             <button
               onClick={() => void addPlayer()}
               type="submit"
-              className="cursor-pointer rounded bg-green-700
-      px-5 py-2.5 text-sm font-medium uppercase text-white transition duration-150 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+              className="cursor-pointer rounded bg-green-800
+      px-5 py-2.5 text-sm font-medium uppercase text-white transition duration-150 hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 dark:bg-green-700 dark:hover:bg-green-600 dark:focus:ring-green-800"
             >
               Ok
             </button>
@@ -118,7 +148,6 @@ const Home: NextPage = () => {
               </button>
             )}
           </div>
-
           <div className="relative overflow-x-auto">
             <table className="text-md w-full text-left text-gray-200 dark:text-gray-300">
               <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
@@ -135,7 +164,7 @@ const Home: NextPage = () => {
                 {localPlayers.map((item, index) => (
                   <tr
                     key={item.id}
-                    className="border-b bg-white dark:border-gray-700 dark:bg-gray-800"
+                    className="border-b bg-white text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
                   >
                     <td className="px-6 py-4">{index + 1}</td>
                     <td className="px-6 py-4">
@@ -156,6 +185,46 @@ const Home: NextPage = () => {
                 ))}
               </tbody>
             </table>
+          </div>
+          <hr className="my-8 h-px w-4/5 border-0 bg-gray-200 dark:bg-gray-700" />
+          <div className="flex flex-col gap-7">
+            <h2 className="text-center text-3xl font-bold text-white">
+              Кинти на човек:{" "}
+              <span className="text-green-600">
+                {(90 / localPlayers.length).toFixed(2)}
+              </span>{" "}
+              лв.
+            </h2>
+            <div className="mt-6 flex justify-center gap-5">
+              <div>
+                <h3 className=" text-xl font-bold text-white">
+                  Отбор Инвалидите
+                </h3>
+                <ul className="max-w-md list-inside list-disc space-y-1 text-gray-300">
+                  {teamA.map((item) => (
+                    <li key={item.id}>{item.name}</li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h3 className=" text-xl font-bold text-white">
+                  Отбор БУКЛУК БЕ
+                </h3>
+                <ul className="max-w-md list-inside list-disc space-y-1 text-gray-300">
+                  {teamB.map((item) => (
+                    <li key={item.id}>{item.name}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+            <button
+              onClick={getRandomTeams}
+              type="submit"
+              className="cursor-pointer rounded bg-green-800 px-5
+      py-2.5 text-sm font-medium uppercase text-white transition duration-150 hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 dark:bg-green-700 dark:hover:bg-green-600 dark:focus:ring-green-800"
+            >
+              Избери отбори
+            </button>
           </div>
         </div>
       </main>

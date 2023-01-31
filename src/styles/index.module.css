@@ -5,6 +5,10 @@
   justify-content: center;
   color: white;
 }
+.map {
+  max-width: 800px;
+  min-height: 300px;
+}
 
 @media only screen and (max-width: 450px) {
   .container {
