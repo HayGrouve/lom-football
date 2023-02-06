@@ -7,6 +7,7 @@ import React from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styles from "../styles/index.module.css";
+import { formatMinutes, formatDayName } from "../util/dateHelper";
 
 interface dbPlayers {
   id: number;
@@ -21,14 +22,7 @@ const Home: NextPage = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [teamA, setTeamA] = useState<dbPlayers[]>([]);
   const [teamB, setTeamB] = useState<dbPlayers[]>([]);
-  const [dateTime, setDateTime] = useState<{
-    day: string;
-    start: number;
-    end: number;
-  }>();
-  const [day, setDay] = useState("");
-  const [startTime, setStartTime] = useState(0);
-  const [endTime, setEndTime] = useState(0);
+  const [dateTime, setDateTime] = useState<Date>();
 
   const getRandomTeams = () => {
     const playersToSort = localPlayers.map((item) => item);
@@ -76,8 +70,8 @@ const Home: NextPage = () => {
     if (error) console.log("error", error);
     else setPlayers(names);
     const { data: dateTimeItem } = await supabase.from("datetime").select("*");
-    // eslint-disable-next-line
-    if (dateTimeItem) setDateTime(dateTimeItem[dateTimeItem?.length - 1]);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+    if (dateTimeItem) setDateTime(new Date(dateTimeItem[0].datetime));
   };
 
   const deleteAllPlayers = () => {
@@ -96,12 +90,10 @@ const Home: NextPage = () => {
     const { error } = await supabase
       .from("datetime")
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
-      .insert({ id: uuidv4(), day: day, start: startTime, end: endTime });
+      .update({ datetime: dateTime?.toISOString() })
+      .eq("id", "c9fa4afb-607b-4bf3-b377-cc3b0253fe8f");
     if (error) console.log("error", error);
     toast.success(`Дата и час са променени!`);
-    setDay("");
-    setStartTime(NaN);
-    setEndTime(NaN);
     setIsRefresh(!isRefresh);
   };
 
@@ -127,53 +119,18 @@ const Home: NextPage = () => {
             <span className={"text-green-600"}>FOOTBALL</span>
           </h1>
           <h2 className="text-center text-3xl tracking-tight text-white">
-            {dateTime && dateTime.day} от {dateTime && dateTime.start}:
-            {dateTime && dateTime.end === 0
-              ? `${dateTime.end}0`
-              : dateTime && dateTime.end}
+            {dateTime && formatDayName(dateTime.getDay())} от{" "}
+            {dateTime && dateTime.getHours()}:
+            {dateTime && formatMinutes(dateTime.getMinutes())}
             ч.
           </h2>
           {isAdmin && (
             <div className="flex flex-col gap-2 text-white sm:flex-row">
               <input
-                onKeyUp={(e) => {
-                  if (e.key === "Enter") {
-                    void addPlayer();
-                  }
-                }}
-                onChange={(e) => void setDay(e.target.value)}
-                value={day}
-                type="text"
-                id="first_name"
-                className={
-                  "rounded border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                }
-                placeholder="Ден"
-                required
-              />
-              <input
-                onChange={(e) => setStartTime(parseInt(e.target.value))}
-                value={startTime}
-                type="number"
-                id="first_name"
-                max={24}
-                className={
-                  "rounded border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                }
-                placeholder="Час"
-                required
-              />
-              <input
-                onChange={(e) => setEndTime(parseInt(e.target.value))}
-                value={endTime}
-                type="number"
-                max={24}
-                id="first_name"
-                className={
-                  "rounded border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                }
-                placeholder="Минути"
-                required
+                type="datetime-local"
+                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pl-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                placeholder="Select date"
+                onChange={(e) => setDateTime(new Date(e.target.value))}
               />
               <button
                 onClick={() => void changeDateTime()}
