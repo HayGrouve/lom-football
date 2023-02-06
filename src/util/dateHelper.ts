@@ -12,7 +12,7 @@ export const formatDayName = (day: number) => {
       return "Петък";
     case 6:
       return "Събота";
-    case 7:
+    case 0:
       return "Неделя";
     default:
       return "Невалиден Ден";
