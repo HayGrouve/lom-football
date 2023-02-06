@@ -15,8 +15,7 @@ export const formatDayName = (day: number) => {
     case 7:
       return "Неделя";
     default:
-      "Невалиден Ден";
-      break;
+      return "Невалиден Ден";
   }
 };
 
@@ -43,6 +42,6 @@ export const formatMinutes = (minutes: number) => {
     case 9:
       return "09";
     default:
-      break;
+      return minutes;
   }
 };
