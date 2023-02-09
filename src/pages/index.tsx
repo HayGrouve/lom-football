@@ -199,10 +199,10 @@ const Home: NextPage = () => {
             <table className="text-md w-full text-left text-gray-200 dark:text-gray-300">
               <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                  <th scope="col" className="px-6 py-3">
+                  <th scope="col" className="rounded-tl px-6 py-3">
                     #
                   </th>
-                  <th scope="col" className="px-6 py-3">
+                  <th scope="col" className="rounded-tr px-6 py-3">
                     Името ти
                   </th>
                 </tr>
