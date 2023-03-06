@@ -238,7 +238,7 @@ const Home: NextPage = () => {
             <h2 className="text-center text-3xl font-bold text-white">
               Кинти на човек:{" "}
               <span className="text-green-600">
-                {(90 / localPlayers.length).toFixed(2)}
+                {(60 / localPlayers.length).toFixed(2)}
               </span>{" "}
               лв.
             </h2>
