@@ -38,7 +38,7 @@ const Home: NextPage = () => {
       setPlayerName("");
       return;
     }
-    if (localPlayers.length === 14) {
+    if (localPlayers.length === 12) {
       toast.error("Много ора сме уе!");
       setPlayerName("");
       return;
@@ -235,13 +235,6 @@ const Home: NextPage = () => {
           </div>
           <hr className="my-8 h-px w-4/5 border-0 bg-gray-200 dark:bg-gray-400" />
           <div className="flex flex-col gap-7">
-            <h2 className="text-center text-3xl font-bold text-white">
-              Кинти на човек:{" "}
-              <span className="text-green-600">
-                {(60 / localPlayers.length).toFixed(2)}
-              </span>{" "}
-              лв.
-            </h2>
             <div className="mt-6 flex justify-center gap-5">
               <div>
                 <h3 className=" text-xl font-bold text-white">
