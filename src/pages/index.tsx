@@ -43,14 +43,24 @@ const Home: NextPage = () => {
       setPlayerName("");
       return;
     }
-    const { error } = await supabase
+    const { data } = await supabase
       .from("players")
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
-      .insert({ id: uuidv4(), name: playerName });
-    if (error) console.log("error", error);
-    toast.success(`${playerName} е регистриран!`);
-    setPlayerName("");
-    setIsRefresh(!isRefresh);
+      .select()
+      .filter("name", "in", `(${playerName})`);
+    if (data && data?.length === 0) {
+      const { error } = await supabase
+        .from("players")
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+        .insert({ id: uuidv4(), name: playerName });
+      if (error) console.log("error", error);
+      toast.success(`${playerName} е регистриран!`);
+      setPlayerName("");
+      setIsRefresh(!isRefresh);
+    } else {
+      toast.error(`${playerName} вече е регистриран!`);
+      setPlayerName("");
+      setIsRefresh(!isRefresh);
+    }
   };
 
   const removePlayer = async (playerID: number) => {
