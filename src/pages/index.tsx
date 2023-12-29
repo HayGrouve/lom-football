@@ -20,17 +20,7 @@ const Home: NextPage = () => {
   const [playerName, setPlayerName] = useState("");
   const [isRefresh, setIsRefresh] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [teamA, setTeamA] = useState<dbPlayers[]>([]);
-  const [teamB, setTeamB] = useState<dbPlayers[]>([]);
   const [dateTime, setDateTime] = useState<Date>();
-
-  const getRandomTeams = () => {
-    const playersToSort = localPlayers.map((item) => item);
-    const players = playersToSort.sort((a, b) => 0.5 - Math.random());
-    const indexToSplit = players.length / 2;
-    setTeamA(players.slice(0, indexToSplit));
-    setTeamB(players.slice(indexToSplit));
-  };
 
   const addPlayer = async () => {
     if (playerName.trim().length === 0) {
@@ -121,10 +111,9 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#000000] to-[#555555]">
-        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-          <ToastContainer />;
-          <h1 className="text-center text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
+      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#000000] to-[#555555] py-10">
+        <div className="container flex flex-col items-center justify-center gap-12 pb-10">
+          <h1 className="text-center text-4xl font-extrabold tracking-tight text-white sm:text-[4rem]">
             <span onClick={() => setIsAdmin(!isAdmin)}>L</span>omski{" "}
             <span className={"text-green-600"}>FOOTBALL</span>
           </h1>
@@ -152,23 +141,8 @@ const Home: NextPage = () => {
               </button>
             </div>
           )}
-          <iframe
-            className={styles.map}
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1467.2546323433069!2d23.353366104190346!3d42.65056237050475!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xa975548429c8bc0f!2s%22Bonsist%22%20Sports%20Complex!5e0!3m2!1sen!2sbg!4v1675163061462!5m2!1sen!2sbg"
-            width="100%"
-            loading="lazy"
-          ></iframe>
-          <p className="text-xs text-white">
-            Администратор{" "}
-            <a
-              href="https://www.facebook.com/dobrevv"
-              className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-            >
-              Дани
-            </a>
-          </p>
+
           <div className={styles.container}>
-            <label htmlFor="player">Запиши се:</label>
             <input
               onKeyUp={(e) => {
                 if (e.key === "Enter") {
@@ -243,40 +217,14 @@ const Home: NextPage = () => {
               </tbody>
             </table>
           </div>
-          <hr className="my-8 h-px w-4/5 border-0 bg-gray-200 dark:bg-gray-400" />
-          <div className="flex flex-col gap-7">
-            <div className="mt-6 flex justify-center gap-5">
-              <div>
-                <h3 className=" text-xl font-bold text-white">
-                  Отбор Инвалидите
-                </h3>
-                <ul className="max-w-md list-inside list-disc space-y-1 text-gray-300">
-                  {teamA.map((item) => (
-                    <li key={item.id}>{item.name}</li>
-                  ))}
-                </ul>
-              </div>
-              <div>
-                <h3 className=" text-xl font-bold text-white">
-                  Отбор БУКЛУК БЕ
-                </h3>
-                <ul className="max-w-md list-inside list-disc space-y-1 text-gray-300">
-                  {teamB.map((item) => (
-                    <li key={item.id}>{item.name}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-            <button
-              onClick={getRandomTeams}
-              type="submit"
-              className="cursor-pointer rounded bg-green-800 px-5
-      py-2.5 text-sm font-medium uppercase text-white transition duration-150 hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 dark:bg-green-700 dark:hover:bg-green-600 dark:focus:ring-green-800"
-            >
-              Разпредели отбори
-            </button>
-          </div>
         </div>
+        <iframe
+          className={styles.map}
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1467.2546323433069!2d23.353366104190346!3d42.65056237050475!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xa975548429c8bc0f!2s%22Bonsist%22%20Sports%20Complex!5e0!3m2!1sen!2sbg!4v1675163061462!5m2!1sen!2sbg"
+          width="100%"
+          loading="lazy"
+        ></iframe>
+        <ToastContainer />
       </main>
     </>
   );
