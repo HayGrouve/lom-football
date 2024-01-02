@@ -8,8 +8,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styles from "../styles/index.module.css";
 import { formatMinutes, formatDayName } from "../util/dateHelper";
+import { TableDemo } from "../components/table.component";
 
-interface dbPlayers {
+export interface dbPlayers {
   id: number;
   created_at: string;
   name: string;
@@ -58,7 +59,10 @@ const Home: NextPage = () => {
       .from("players")
       .delete()
       .eq("id", playerID);
-    if (error) console.log("error", error);
+    if (error) {
+      console.log("error", error);
+      toast.error(`Грешка при изтриване на играча!`);
+    } else toast.success(`Играчът е изтрит!`);
     setIsRefresh(!isRefresh);
   };
 
@@ -180,42 +184,12 @@ const Home: NextPage = () => {
             )}
           </div>
           <div className="relative overflow-x-auto">
-            <table className="text-md w-full text-left text-gray-200 dark:text-gray-300">
-              <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                  <th scope="col" className="rounded-tl px-6 py-3">
-                    #
-                  </th>
-                  <th scope="col" className="rounded-tr px-6 py-3">
-                    Името ти
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {localPlayers.map((item, index) => (
-                  <tr
-                    key={item.id}
-                    className="border-b bg-white text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
-                  >
-                    <td className="px-6 py-4">{index + 1}</td>
-                    <td className="px-6 py-4">
-                      {item.name}
-                      {isAdmin && (
-                        <button
-                          onClick={() => void removePlayer(item.id)}
-                          className={
-                            "ml-3 cursor-pointer text-red-500 hover:text-red-400"
-                          }
-                        >
-                          {" "}
-                          X
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <TableDemo
+              players={localPlayers}
+              isAdmin={isAdmin}
+              // eslint-disable-next-line @typescript-eslint/no-misused-promises
+              removePlayer={removePlayer}
+            />
           </div>
         </div>
         <iframe
@@ -224,6 +198,7 @@ const Home: NextPage = () => {
           width="100%"
           loading="lazy"
         ></iframe>
+
         <ToastContainer />
       </main>
     </>
