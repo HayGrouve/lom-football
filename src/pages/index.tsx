@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import styles from "../styles/index.module.css";
 import { formatMinutes, formatDayName } from "../util/dateHelper";
 import { TableDemo } from "../components/table.component";
+import { Checkbox } from "../../@/components/ui/checkbox";
 
 export interface dbPlayers {
   id: number;
@@ -115,7 +116,7 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#000000] to-[#555555] py-10">
+      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#000000] to-[#555555] py-10 ">
         <div className="container flex flex-col items-center justify-center gap-12 pb-10">
           <h1 className="text-center text-4xl font-extrabold tracking-tight text-white sm:text-[4rem]">
             <span onClick={() => setIsAdmin(!isAdmin)}>L</span>omski{" "}
@@ -191,13 +192,13 @@ const Home: NextPage = () => {
               removePlayer={removePlayer}
             />
           </div>
+          <iframe
+            className={styles.map}
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1467.2546323433069!2d23.353366104190346!3d42.65056237050475!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xa975548429c8bc0f!2s%22Bonsist%22%20Sports%20Complex!5e0!3m2!1sen!2sbg!4v1675163061462!5m2!1sen!2sbg"
+            width="100%"
+            loading="lazy"
+          ></iframe>
         </div>
-        <iframe
-          className={styles.map}
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1467.2546323433069!2d23.353366104190346!3d42.65056237050475!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xa975548429c8bc0f!2s%22Bonsist%22%20Sports%20Complex!5e0!3m2!1sen!2sbg!4v1675163061462!5m2!1sen!2sbg"
-          width="100%"
-          loading="lazy"
-        ></iframe>
 
         <ToastContainer />
       </main>

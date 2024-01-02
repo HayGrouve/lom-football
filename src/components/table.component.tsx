@@ -33,7 +33,7 @@ export function TableDemo({ players, isAdmin, removePlayer }: TableDemoProps) {
               {isAdmin && (
                 <Checkbox
                   onClick={() => removePlayer(player.id)}
-                  className="rounded-lg border-red-500"
+                  className="h-4 w-4 rounded-lg border-red-500"
                 />
               )}
             </TableCell>
