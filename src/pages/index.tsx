@@ -194,7 +194,7 @@ const Home: NextPage = () => {
           </div>
           <iframe
             className={styles.map}
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1467.2546323433069!2d23.353366104190346!3d42.65056237050475!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xa975548429c8bc0f!2s%22Bonsist%22%20Sports%20Complex!5e0!3m2!1sen!2sbg!4v1675163061462!5m2!1sen!2sbg"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2934.235592583132!2d23.354147822144785!3d42.65636267328853!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40aa8425549f6aa5%3A0x77eda948e5b815da!2sSports%20complex%20%22Peace%20and%20Friendship%22!5e0!3m2!1sen!2sbg!4v1704383842283!5m2!1sen!2sbg" 
             width="100%"
             loading="lazy"
           ></iframe>
